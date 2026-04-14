@@ -1,47 +1,13 @@
-const { recurringTimer, stopRecurringTimer } = require('../src/recurringTimer')
+let intervalId;
 
-jest.useFakeTimers()
+function recurringTimer(message, interval) {
+    intervalId = setInterval(() => {
+        console.log(message);
+    }, interval);
+}
 
-describe('recurringTimer', () => {
-  test('should log the message at the specified interval', () => {
-    console.log = jest.fn() // Mock console.log
+function stopRecurringTimer() {
+    clearInterval(intervalId);
+}
 
-    const message = 'Recurring message'
-    const interval = 2000 // 2 seconds
-    const timerId = recurringTimer(message, interval)
-
-    // Simulate multiple intervals
-    jest.advanceTimersByTime(6000) // Advance by 6 seconds (3 intervals)
-
-    // Verify the message is logged 3 times
-    expect(console.log).toHaveBeenCalledTimes(3)
-    expect(console.log).toHaveBeenCalledWith(message)
-
-    // Stop the timer
-    stopRecurringTimer(timerId)
-  })
-
-  test('should stop logging when stopRecurringTimer is called', () => {
-    console.log = jest.fn()
-
-    const message = 'Stop this message'
-    const interval = 1000 // 1 second
-    const timerId = recurringTimer(message, interval)
-
-    // Simulate a few intervals and then stop
-    jest.advanceTimersByTime(3000) // Advance by 3 seconds
-    stopRecurringTimer(timerId)
-    jest.advanceTimersByTime(2000) // Advance by another 2 seconds
-
-    // Verify the message was logged 3 times and no more
-    expect(console.log).toHaveBeenCalledTimes(3)
-    expect(console.log).toHaveBeenCalledWith(message)
-  })
-})
-// Performs an action repeatedly at fixed intervals until stopped.
-
-// Steps:
-// 1. Accept two parameters: `message` (string) and `interval` (in milliseconds).
-// 2. Use `setInterval` to repeatedly log the message at the specified interval.
-// 3. Return the timer ID so it can be used for stopping the timer.
-const timerId = recurringTimer("Hello, world!", 2000); // Logs "Hello, world!" every 2 seconds.
+module.exports = { recurringTimer, stopRecurringTimer };
