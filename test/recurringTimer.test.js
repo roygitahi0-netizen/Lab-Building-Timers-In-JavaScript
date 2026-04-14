@@ -38,3 +38,10 @@ describe('recurringTimer', () => {
     expect(console.log).toHaveBeenCalledWith(message)
   })
 })
+// Performs an action repeatedly at fixed intervals until stopped.
+
+// Steps:
+// 1. Accept two parameters: `message` (string) and `interval` (in milliseconds).
+// 2. Use `setInterval` to repeatedly log the message at the specified interval.
+// 3. Return the timer ID so it can be used for stopping the timer.
+const timerId = recurringTimer("Hello, world!", 2000); // Logs "Hello, world!" every 2 seconds.
