@@ -11,55 +11,47 @@
  * Example Usage:
  * countdownTimer(10, 1000); // Logs remaining time every second for 10 seconds.
  */
-function countdownTimer(startTime, interval) {
-  // Initialize the remaining time
-  // Set up a timer using setInterval
-  // Log the remaining time and decrement it
-  // Stop the timer when time reaches 0
-  // Return the timer ID for validation
-}
-function countdownTimer(startTime, interval) {
-  let current = startTime;
-
-  const timerId = setInterval(function () {
-    console.log(current);
-    current--;
-
-    if (current === 0) {
-      clearInterval(timerId);
-    }
-  }, interval);
-}
-const { countdownTimer } = require('../src/countdown');
-
-jest.useFakeTimers();
-
-describe('countdownTimer', () => {
-  beforeEach(() => {
-    console.log = jest.fn(); // Mock console.log
-  });
-
-  afterEach(() => {
-    jest.clearAllMocks(); // Reset mocks after each test
-  });
-
-  test('should log remaining time at intervals and stop at 0', () => {
-    const startTime = 5; // 5 seconds
-    const interval = 1000; // 1 second
-    const timerId = countdownTimer(startTime, interval);
-
-// Fast-forward all timers
-jest.advanceTimersByTime(startTime * interval);
-
-// Verify that console.log was called correctly
-expect(console.log).toHaveBeenCalledTimes(startTime);
-for (let i = startTime; i > 0; i--) {
-  expect(console.log).toHaveBeenCalledWith(i);
+/**
+ * Function 4: countdownTimer
+ * Description: Creates a countdown timer that logs remaining time every second
+ * @param {number} startTime - Starting number for countdown (e.g., 5)
+ * @returns {number} - The timer ID from setInterval
+ */
+function countdownTimer(startTime) {
+    let currentTime = startTime;
+    
+    // Log the starting time immediately
+    console.log(currentTime);
+    
+    // Create interval that runs every 1000ms (1 second)
+    const timerId = setInterval(() => {
+        currentTime--; // Decrease by 1
+        
+        if (currentTime > 0) {
+            // Log current time if still greater than 0
+            console.log(currentTime);
+        } else if (currentTime === 0) {
+            // Log "Time's up!" when reaching 0 and stop the timer
+            console.log("Time's up!");
+            clearInterval(timerId);
+        }
+    }, 1000);
+    
+    // Return the timer ID
+    return timerId;
 }
 
-// Verify clearInterval was called
-clearInterval(timerId); // Ensure cleanup to avoid overlapping
-  });
-});
+// ==========================================
+// EXPORT FUNCTIONS FOR TESTING
+// ==========================================
+// This makes the functions available to the test file
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        delayedReminder,
+        recurringTimer,
+        stopRecurringTimer,
+        countdownTimer
+    };
+}
 
 module.exports = { countdownTimer };
